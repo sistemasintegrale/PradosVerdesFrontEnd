@@ -17,7 +17,7 @@ export class ChangePasswordComponent {
     public dialogRef: MatDialogRef<ChangePasswordComponent>,) {
 
     this.registerForm = this.fb.group({
-      pass1: new FormControl(this.usuario ? this.usuario.password : '', [Validators.required]),
+      pass1: new FormControl(this.usuario ? this.usuario.usua_password_usuario : '', [Validators.required]),
       pass2: new FormControl('', [Validators.required]),
       newPass1: new FormControl('', [Validators.required]),
       newPass2: new FormControl('', [Validators.required]),

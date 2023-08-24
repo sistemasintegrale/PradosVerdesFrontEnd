@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   validarToken(): Observable<boolean> {
-    return this.http.get(`${base_url}/usuario/validarToken`)
+    return this.http.get(`${base_url}/Usuarios/validarToken`)
       .pipe(
         tap((resp: any) => {
           if (resp.isSucces) {
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   login(formData: LoginForm): Observable<BaseResponse<string>> {
-    return this.http.post<BaseResponse<string>>(`${base_url}/usuario/generate/token`, formData)
+    return this.http.post<BaseResponse<string>>(`${base_url}/Usuarios/generate/token`, formData)
       .pipe(
         tap((resp) => {
           if (resp.isSucces) {

@@ -15,8 +15,6 @@ import { SubMenu } from 'src/app/models/sub-menu';
 export class SidebarComponent {
   public usuario!: UsuarioData;
   public menuItems !: any[];
-
-
   public sideMenu: Menu[] = [];
 
   subMenuUsuarios: SubMenu = {
@@ -32,16 +30,11 @@ export class SidebarComponent {
     color: 'text-red-500'
   };
 
-  subMenuHistorialAutos: SubMenu = {
-    titulo: 'Historial Autos',
-    url: '/reportes/reporte-historial-autos',
-    icono: 'ni ni-single-copy-04',
-    color: 'text-orange-500'
-  }
+   
 
-  subMenuHistorialMotos: SubMenu = {
-    titulo: 'Historial Motos',
-    url: '/reportes/reporte-historial-motos',
+  subMenuRegistroContratos: SubMenu = {
+    titulo: 'Registro de Contratos',
+    url: '/operaciones/registro-contratos',
     icono: 'ni ni-collection',
     color: 'text-emerald-500'
   }
@@ -60,24 +53,16 @@ export class SidebarComponent {
       titulo: "Main",
       submenu: [this.SubMenuMain]
     }
-
-    const subMenusHistorial: SubMenu[] = [];
-    if (this.authService.usuario.admin || this.authService.usuario.id === 1 || this.authService.usuario.codigoClienteNG !== 0) {
-      subMenusHistorial.push(this.subMenuHistorialAutos)
-    }
-    if (this.authService.usuario.admin || this.authService.usuario.id === 1 || this.authService.usuario.codigoClienteNM !== 0) {
-      subMenusHistorial.push(this.subMenuHistorialMotos)
-    }
-
-    const menuReportes: Menu = {
-      titulo: 'Reportes',
-      submenu: subMenusHistorial
+   
+    const menuOperaciones : Menu ={
+      titulo : 'Operaciones',
+      submenu : [this.subMenuRegistroContratos]
     }
 
     const subMenuMantenimientos: SubMenu[] = [];
-    if (this.authService.usuario.admin || this.authService.usuario.id === 1) {
+    
       subMenuMantenimientos.push(this.subMenuUsuarios);
-    }
+
     subMenuMantenimientos.push(this.subMenuMiPerfil);
 
     const menuMantenimientos: Menu = {
@@ -85,7 +70,7 @@ export class SidebarComponent {
       submenu: subMenuMantenimientos
     }
 
-    this.sideMenu.push(menuDashboard, menuReportes, menuMantenimientos)
+    this.sideMenu.push(menuDashboard, menuOperaciones, menuMantenimientos)
 
 
 

@@ -5,10 +5,9 @@
       class="h-auto relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
       <div class="p-5 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
         <h6
-          *ngIf="authService.usuario.admin !== true && (authService.usuario.codigoClienteNG===0 || authService.usuario.codigoClienteNM === 0)"
+          
           class="dark:text-white font-semibold">{{titulo}}</h6>
-        <div class="flex gap-10"
-          *ngIf="authService.usuario.admin === true || authService.usuario.codigoClienteNG!==0 && authService.usuario.codigoClienteNM !== 0">
+        <div class="flex gap-10">
           <div class="inline-flex items-center">
             <label class="relative flex cursor-pointer items-center rounded-full p-3" for="html"
               data-ripple-dark="true">

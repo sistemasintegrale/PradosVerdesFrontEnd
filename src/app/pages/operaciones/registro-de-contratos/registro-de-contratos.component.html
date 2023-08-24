@@ -1,0 +1,144 @@
+<div class="flex flex-wrap -mx-3">
+    <div class="flex-none w-full max-w-full px-3">
+      <div
+        class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+        <!-- <div class="p-5 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+          <h6 class="dark:text-white font-semibold">Criterios de Búsqueda :</h6>
+        </div> -->
+        <div class="p-5">
+          <div class="grid gap-x-4 gap-y-1 grid-cols-2  xl:grid-cols-7 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-4 "
+            [formGroup]="range">
+  
+            <div class="relative h-10 w-full min-w-[140px]">
+              <input type="date" formControlName="fechaInicio"
+                class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                placeholder=" " />
+              <label
+                class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                Fecha Inicio :
+              </label>
+            </div>
+  
+            <div class="relative h-10 w-full min-w-[140px]">
+              <input type="date" formControlName="fechaFinal" 
+                class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                placeholder=" " />
+              <label
+                class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                Fecha Fin :
+              </label>
+            </div>
+
+            <div class="relative h-10 w-full min-w-[100px]">
+              <button (click)="cargarContratos()" [disabled]="cargando"
+                class="h-full flex select-none items-center gap-3 rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                type="button" data-ripple-light="true">
+                <div
+                  class="mr-1 flex h-4 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                  <i class="fas fa-search"></i>
+                </div>
+                {{cargando ? 'Cargando...':'Buscar'}}
+              </button>
+  
+            </div>
+            <div class="relative h-10 w-full min-w-[100px]">
+              <button (click)="exportarExcel()" [disabled]="cargandoExcel"
+                class="h-full flex select-none items-center rounded-lg bg-green-600 py-2 pr-4 pl-2 text-center align-middle  text-xs font-semibold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                type="button" data-ripple-light="true">
+                <div
+                  class=" flex h-4 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 font-[1] text-lg	">
+                  <i *ngIf="!cargandoExcel" class="fa fa-file-excel-o"></i>
+                  <i *ngIf="cargandoExcel" class="fa fa-spinner fa-spin"></i>
+                </div>
+                {{!cargandoExcel ? 'Exportar Excel' : 'Exportando'}}
+              </button>
+            </div>        
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="flex flex-wrap -mx-3 ">
+    <div class="flex-none w-full max-w-full px-3 ">
+        <div
+            class="h-auto relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+            <div class="p-6">
+                <div class="flex justify-between mb-3">
+                     
+                    <div class="flex-none max-w-full px-3 text-right">
+                        <button (click)="openAdd()" matRipple
+                            class="h-full flex select-none items-center rounded-lg bg-blue-500 py-2 pr-4 pl-2 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            type="button" data-ripple-light="true">
+                            <div
+                                class=" flex h-4 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            Nuevo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-auto rounded-lg shadow">
+
+                <p-table [value]="contratos" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="'p-datatable-sm'"
+                    [paginator]="true" [scrollable]="true" scrollHeight="400px" [(selection)]="contrato"
+                    dataKey="cntc_icod_contrato" selectionMode="single" [rows]="10"
+                    currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"
+                    [rowsPerPageOptions]="[10, 25, 50]" [showCurrentPageReport]="true"
+                    [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="header" class=" border-b-1 border-indigo-200 dark:bg-violet-950 ">
+                        <tr>
+
+                            <th class="p-2 text-sm font-semibold tracking-wide text-center dark:text-white w-2  !bg-violet-100">
+                                Acciones
+                            </th>
+                            <th pSortableColumn="usua_nombre_usuario"
+                                class="p-2 text-sm font-semibold tracking-wide text-center dark:text-white min-w-[150px] !bg-violet-100">
+                                Nombre Completo <p-sortIcon field="fechaOrden"></p-sortIcon></th>
+                            <th pSortableColumn="usua_codigo_usuario"
+                                class="p-2 text-sm font-semibold tracking-wide text-center dark:text-white min-w-[180px] !bg-violet-100">
+                                Código<p-sortIcon field="ordenCompra"></p-sortIcon></th>
+                            <th pSortableColumn="usua_iactivo"
+                                class="p-2 text-sm font-semibold tracking-wide !text-center dark:text-white min-w-[250px] !bg-violet-100">
+                                Estado<p-sortIcon field="cliente"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr [pSelectableRow]="item">
+                            <td class="whitespace-nowrap px-5 py-2  dark:text-white text-sm text-center">
+                                <button class="text-indigo-600"
+                                    matTooltip="Editar contrato {{ item.cntc_vnumero_contrato }}" matRipple
+                                    (click)="openEdit(item)">
+                                    <i class="fa fa-pencil-square-o colo" aria-hidden="true"></i>
+
+                                </button>
+                                <button matRipple
+                                    class="text-pink-600 ml-2 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+                                    matTooltip="Eliminar contrato {{ item.cntc_vnumero_contrato }}"
+                                    (click)="eliminar(item)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+
+                                </button>
+
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-2 dark:text-white text-sm">{{ item.cntc_vnumero_contrato }}</td>
+                            <td class="whitespace-nowrap px-4 py-2 dark:text-white text-sm">{{ item.cntc_sfecha_contrato }}</td>
+                            <td class="whitespace-nowrap px-4 py-2 dark:text-white text-sm"> {{item.cntc_vnombre_comercial ? 'Activo' : 'Inactivo'}}</td>
+                           
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="paginatorleft">
+                        <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorright">
+                        <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                    </ng-template>
+                </p-table>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

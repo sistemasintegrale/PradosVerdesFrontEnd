@@ -31,8 +31,8 @@ export class Excelv2Service {
 
     // CREATE A WORKBOOK AND WORKSHEET
     const workbook = new Workbook();
-    workbook.creator = this.user.nombre;
-    workbook.lastModifiedBy = this.user.nombre;
+    workbook.creator = this.user.usua_nombre_usuario;
+    workbook.lastModifiedBy = this.user.usua_nombre_usuario;
     workbook.created = new Date();
     workbook.modified = new Date();
     const worksheet = workbook.addWorksheet(sheetName);

@@ -1,10 +1,8 @@
 import { RegisterForm } from 'src/app/interfaces/usuario/register-form';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Cliente } from 'src/app/interfaces/reporte-historial/cliente';
 import { UsuarioData } from 'src/app/models/usuario/usuario-data';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ClienteService } from 'src/app/services/reports/cliente.service';
 import { UsuarioService } from 'src/app/services/mantenimientos/usuario.service';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,28 +10,24 @@ import { ChangePasswordComponent } from 'src/app/shared/components/change-passwo
 
 @Component({
   selector: 'app-mi-cuenta',
-  templateUrl: './mi-cuenta.component.html',
-  styleUrls: ['./mi-cuenta.component.css']
+  templateUrl: './mi-cuenta.component.html'
 })
 export class MiCuentaComponent implements OnInit {
   public usuario!: UsuarioData;
   public verPassword: boolean = false;
   public titulo = '';
   public formSubmitted = false;
-  public clientesNG!: Cliente[];
-  public clientesNM!: Cliente[];
   public estados = [
     { value: true, descripcion: 'Activo' }, { value: false, descripcion: 'Inactivo' }
   ]
   constructor(private authservice: AuthService,
-    private clienteservice: ClienteService,
     private usuarioService: UsuarioService,
     public dialog: MatDialog) {
 
   }
   ngOnInit(): void {
     this.usuario = this.authservice.usuario;
-    this.usuarioService.getUsuario(this.authservice.usuario.id)
+    this.usuarioService.getUsuario(this.authservice.usuario.usua_icod_usuario)
       .subscribe({
         next: (data => {
           this.usuario = data.data;
@@ -41,46 +35,28 @@ export class MiCuentaComponent implements OnInit {
         })
       });
   }
-  async cargar() {
-    await Promise.all([
-      this.cargarClienteNG(),
-      this.cargarClienteNM()
-    ])
+    cargar() {
+ 
 
     this.registerForm = new FormGroup({
-      nombre: new FormControl(this.usuario ? this.usuario.nombre : '', [Validators.required]),
-      apellidos: new FormControl(this.usuario ? this.usuario.apellidos : '', [Validators.required]),
-      email: new FormControl(this.usuario ? this.usuario.email : '', [Validators.required, Validators.email]),
-      password: new FormControl(this.usuario ? this.usuario.password : '', [Validators.required]),
-      estado: new FormControl(this.usuario ? this.usuario.estado : true, [Validators.required]),
-      codigoClienteNG: new FormControl({ value: this.usuario ? this.usuario.codigoClienteNG : 0, disabled: false }),
-      codigoClienteNM: new FormControl({ value: this.usuario ? this.usuario.codigoClienteNM : 0, disabled: false }),
+      nombre: new FormControl(this.usuario ? this.usuario.usua_nombre_usuario : '', [Validators.required]),
+      codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),    
+      password: new FormControl(this.usuario ? this.usuario.usua_password_usuario : '', [Validators.required]),
+      estado: new FormControl(this.usuario ? this.usuario.usua_iactivo : true, [Validators.required])
     });
   }
   registerForm = new FormGroup({
-    nombre: new FormControl(this.usuario ? this.usuario.nombre : '', [Validators.required]),
-    apellidos: new FormControl(this.usuario ? this.usuario.apellidos : '', [Validators.required]),
-    email: new FormControl(this.usuario ? this.usuario.email : '', [Validators.required, Validators.email]),
-    password: new FormControl(this.usuario ? this.usuario.password : '', [Validators.required]),
-    estado: new FormControl(this.usuario ? this.usuario.estado : true, [Validators.required]),
-    codigoClienteNG: new FormControl({ value: this.usuario ? this.usuario.codigoClienteNG : 0, disabled: false }),
-    codigoClienteNM: new FormControl({ value: this.usuario ? this.usuario.codigoClienteNM : 0, disabled: false }),
+    nombre: new FormControl(this.usuario ? this.usuario.usua_nombre_usuario : '', [Validators.required]),
+    codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),    
+    password: new FormControl(this.usuario ? this.usuario.usua_password_usuario : '', [Validators.required]),
+    estado: new FormControl(this.usuario ? this.usuario.usua_iactivo : true, [Validators.required])
   });
 
 
   campoNoValido(campo: string): boolean {
     return this.registerForm.get(campo)?.invalid! && this.formSubmitted;
   }
-  cargarClienteNM() {
-    this.clienteservice.ClientesNovaMotos().subscribe(res => {
-      this.clientesNM = res.data.filter(x => x.id === this.usuario.codigoClienteNM);
-    });
-  }
-  cargarClienteNG() {
-    this.clienteservice.ClientesNovaGlass().subscribe(res => {
-      this.clientesNG = res.data.filter(x => x.id === this.usuario.codigoClienteNG);
-    });
-  }
+   
 
   openChangePassword(){
     const dialogRef = this.dialog.open(ChangePasswordComponent, {
@@ -94,22 +70,17 @@ export class MiCuentaComponent implements OnInit {
       if (result.update) {
         const data: RegisterForm = {
           nombre: this.registerForm.controls.nombre.value!,
-          apellidos: this.registerForm.controls.apellidos.value!,
-          email: this.registerForm.controls.email.value!,
+          codigo: this.registerForm.controls.codigo.value!,         
           password: result.newPasss,
           password2: result.newPasss,
-          terminos: true,
-          estado: this.registerForm.controls.estado.value!,
-          codigoClienteNG: this.registerForm.controls.codigoClienteNG.value!,
-          codigoClienteNM: this.registerForm.controls.codigoClienteNM.value!,
-          admin:true
+          estado: this.registerForm.controls.estado.value!
         }
     
         this.usuarioService
-          .modificarUsuario(data, this.usuario.id)
+          .modificarUsuario(data, this.usuario.usua_icod_usuario)
           .subscribe({
             next: ((data) => {
-              this.usuarioService.getUsuario(this.authservice.usuario.id)
+              this.usuarioService.getUsuario(this.authservice.usuario.usua_icod_usuario)
                 .subscribe({
                   next: (data => {
                     this.usuario = data.data;
@@ -119,7 +90,7 @@ export class MiCuentaComponent implements OnInit {
               if (data.isSucces) {
                 Swal.fire(
                   'Usuario modificado',
-                  `Usuario ${data.data.nombre} fué modificado correctamente`,
+                  `Usuario ${data.data.usua_nombre_usuario} fué modificado correctamente`,
                   'success'
                 );
               }
@@ -137,22 +108,17 @@ export class MiCuentaComponent implements OnInit {
 
     const data: RegisterForm = {
       nombre: this.registerForm.controls.nombre.value!,
-      apellidos: this.registerForm.controls.apellidos.value!,
-      email: this.registerForm.controls.email.value!,
+      codigo: this.registerForm.controls.codigo.value!,
       password: this.registerForm.controls.password.value!,
       password2: this.registerForm.controls.password.value!,
-      terminos: true,
-      estado: this.registerForm.controls.estado.value!,
-      codigoClienteNG: this.registerForm.controls.codigoClienteNG.value!,
-      codigoClienteNM: this.registerForm.controls.codigoClienteNM.value!,
-      admin:true
+      estado: this.registerForm.controls.estado.value!
     }
 
     this.usuarioService
-      .modificarUsuario(data, this.usuario.id)
+      .modificarUsuario(data, this.usuario.usua_icod_usuario)
       .subscribe({
         next: ((data) => {
-          this.usuarioService.getUsuario(this.authservice.usuario.id)
+          this.usuarioService.getUsuario(this.authservice.usuario.usua_icod_usuario)
             .subscribe({
               next: (data => {
                 this.usuario = data.data;
@@ -162,7 +128,7 @@ export class MiCuentaComponent implements OnInit {
           if (data.isSucces) {
             Swal.fire(
               'Usuario modificado',
-              `Usuario ${data.data.nombre} fué modificado correctamente`,
+              `Usuario ${data.data.usua_nombre_usuario} fué modificado correctamente`,
               'success'
             );
           }

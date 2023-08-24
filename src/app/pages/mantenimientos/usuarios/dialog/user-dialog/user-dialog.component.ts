@@ -2,11 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Cliente } from 'src/app/interfaces/reporte-historial/cliente';
 import { UsuarioData } from 'src/app/models/usuario/usuario-data';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UsuarioService } from 'src/app/services/mantenimientos/usuario.service';
-import { ClienteService } from 'src/app/services/reports/cliente.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -19,8 +17,6 @@ export class UserDialogComponent implements OnInit {
   public titulo = '';
   public formSubmitted = false;
   public registerForm!: FormGroup;
-  public clientesNG!: Cliente[];
-  public clientesNM!: Cliente[];
   public admin!: boolean;
   public estados = [
     { value: true, descripcion: 'Activo' }, { value: false, descripcion: 'Inactivo' }
@@ -30,49 +26,33 @@ export class UserDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<UserDialogComponent>,
     public usuarioService: UsuarioService,
     public snackBar: MatSnackBar,
-    private clienteservice: ClienteService,
     public authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public usuario: UsuarioData
   ) {
     if (this.usuario !== null) {
-      this.titulo = 'Modificar usuario ' + this.usuario.nombre;
+      this.titulo = 'Modificar usuario ' + this.usuario.usua_nombre_usuario;
     } else {
       this.titulo = 'Nuevo usuario';
 
     }
   }
-  async ngOnInit() {
+    ngOnInit() {
 
 
 
 
     this.registerForm = new FormGroup({
-      nombre: new FormControl(this.usuario ? this.usuario.nombre : '', [Validators.required]),
-      apellidos: new FormControl(this.usuario ? this.usuario.apellidos : '', [Validators.required]),
-      email: new FormControl(this.usuario ? this.usuario.email : ''),
-      password: new FormControl(this.usuario ? this.usuario.password : '', [Validators.required]),
-      estado: new FormControl(this.usuario ? this.usuario.estado : true, [Validators.required]),
-      codigoClienteNG: new FormControl(this.usuario ? this.usuario.codigoClienteNG : 0),
-      codigoClienteNM: new FormControl(this.usuario ? this.usuario.codigoClienteNM : 0),
-      admin: new FormControl(this.usuario ? this.usuario.admin : false),
+      nombre: new FormControl(this.usuario ? this.usuario.usua_nombre_usuario : '', [Validators.required]),
+      codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),
+      password: new FormControl(this.usuario ? this.usuario.usua_password_usuario : '', [Validators.required]),
+      estado: new FormControl(this.usuario ? this.usuario.usua_iactivo : true, [Validators.required]),    
     });
-    await Promise.all([
-      this.cargarClienteNG(),
-      this.cargarClienteNM()
-    ])
+     
   }
 
 
-  cargarClienteNM() {
-    this.clienteservice.ClientesNovaMotos().subscribe(res => {
-      this.clientesNM = res.data;
-    });
-  }
-  cargarClienteNG() {
-    this.clienteservice.ClientesNovaGlass().subscribe(res => {
-      this.clientesNG = res.data;
-    });
-  }
+  
+  
 
   close() {
     this.dialogRef.close();
@@ -108,7 +88,7 @@ export class UserDialogComponent implements OnInit {
             this.dialogRef.close(true);
             Swal.fire(
               'Usuario Creado',
-              `Usuario ${data.data.nombre} fué creado correctamente`,
+              `Usuario ${data.data.usua_nombre_usuario} fué creado correctamente`,
               'success'
             );
           }
@@ -124,15 +104,15 @@ export class UserDialogComponent implements OnInit {
     if (!this.validarUsuario())
       return
     this.usuarioService
-      .modificarUsuario(this.registerForm.value, this.usuario.id)
+      .modificarUsuario(this.registerForm.value, this.usuario.usua_icod_usuario)
       .subscribe({
         next: ((data) => {
           if (data.isSucces) {
             this.dialogRef.close(true);
             Swal.fire(
               'Usuario modificado',
-              `Usuario ${data.data.nombre} fué modificado correctamente`,
-              'success'
+              `Usuario ${data.data.usua_nombre_usuario} fué modificado correctamente`,
+              'success' 
             );
           }
         })

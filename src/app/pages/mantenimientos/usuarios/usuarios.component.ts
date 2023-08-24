@@ -7,8 +7,6 @@ import Swal from 'sweetalert2';
 import { UserDialogComponent } from './dialog/user-dialog/user-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ClienteService } from 'src/app/services/reports/cliente.service';
-import { Cliente } from 'src/app/interfaces/reporte-historial/cliente';
 
 @Component({
   selector: 'app-usuarios',
@@ -23,53 +21,22 @@ export class UsuariosComponent {
   public filters = {} as UsuarioFilters;
   public nombre: string = '';
   public cantidadRegistros: number = 10;
-  public clientesNG!: Cliente[];
-  public clientesNM!: Cliente[];
+  public selectedUser! : UsuarioData;
   constructor(
     private usuarioService: UsuarioService,
     public dialog: MatDialog,
     public authService: AuthService,
-    private clienteservice: ClienteService,
   ) { }
-  async ngOnInit() {
-    await Promise.all([
-      this.cargarClienteNG(),
-      this.cargarClienteNM()
-    ])
-    this.cargarUsuarios();
-    
-  }
-  getClienteNM(id: number): string {
-    if (id === 0)
-      return "";
-    const cliente = this.clientesNM.filter(x => x.id === id);
-    return cliente[0].nombre;
-  }
-  getClienteNG(id: number): string {
-    if (id === 0)
-      return "";
-    const cliente = this.clientesNG.filter(x => x.id === id);
-    return cliente[0].nombre;
-  }
-  cargarClienteNM() {
-    this.clienteservice.ClientesNovaMotos().subscribe(res => {
-      this.clientesNM = res.data;
-    });
-  }
-  cargarClienteNG() {
-    this.clienteservice.ClientesNovaGlass().subscribe(res => {
-      this.clientesNG = res.data;
-    });
-  }
+   ngOnInit() {
+    this.cargarUsuarios();    
+  } 
+
+
   cargarUsuarios() {
-    this.filters.cantidadRegistros = this.cantidadRegistros;
-    this.filters.desde = this.desde;
-    this.filters.nombre = this.nombre;
-    this.cargando = true;
-    this.usuarioService.cargarUsuarios(this.filters)
+    this.usuarioService.cargarUsuarios()
       .subscribe(resp => {
-        this.totalUsuarios = resp.cantidad;
-        this.usuarios = resp.data.data
+        
+        this.usuarios = resp.data
         this.cargando = false;
       });
   }
@@ -114,13 +81,13 @@ export class UsuariosComponent {
   }
 
   openEdit(usuario: UsuarioData) {
-    if (usuario.id === 1 && this.authService.usuario.id != 1)
+    if (usuario.usua_icod_usuario === 1 && this.authService.usuario.usua_icod_usuario != 1)
       return;
 
-    this.usuarioService.getUsuario(usuario.id)
+    this.usuarioService.getUsuario(usuario.usua_icod_usuario)
       .subscribe({
         next: ((data) => {
-          usuario.password = data.data.password
+          usuario.usua_password_usuario = data.data.usua_password_usuario
           this.dialog.open(UserDialogComponent, {
             disableClose: false,
             width: '400px',
@@ -135,11 +102,11 @@ export class UsuariosComponent {
   }
 
   eliminarUsuario(usuario: UsuarioData) {
-    if (usuario.id === 1 && this.authService.usuario.id != 1)
+    if (usuario.usua_icod_usuario === 1 && this.authService.usuario.usua_icod_usuario != 1)
       return;
     Swal.fire({
       title: '¿Borrar usuario?',
-      text: `Esta apunto de borrar a ${usuario.nombre}`,
+      text: `Esta apunto de borrar a ${usuario.usua_nombre_usuario}`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si, borrarlo'
@@ -149,7 +116,7 @@ export class UsuariosComponent {
           .subscribe(resp => {
             Swal.fire(
               'Usuario borrado',
-              `${usuario.nombre} fué borrado correctamente`,
+              `${usuario.usua_nombre_usuario} fué borrado correctamente`,
               'success'
             );
             this.cargarUsuarios();

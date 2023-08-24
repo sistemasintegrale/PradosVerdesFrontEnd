@@ -52,12 +52,12 @@ export class SideBarService {
      }
 
      const subMenusHistorial : SubMenu[] = [];
-     if (this.authService.usuario.admin || this.authService.usuario.id === 1 || this.authService.usuario.codigoClienteNG !==0) {
+    
       subMenusHistorial.push(this.subMenuHistorialAutos)
-     }
-     if (this.authService.usuario.admin || this.authService.usuario.id === 1 || this.authService.usuario.codigoClienteNM !==0) {
+    
+    
       subMenusHistorial.push(this.subMenuHistorialMotos)
-     }
+ 
 
      const menuReportes : Menu = {
       titulo : 'Reportes',
@@ -65,9 +65,8 @@ export class SideBarService {
      }
 
      const subMenuMantenimientos : SubMenu[]=[];
-     if (this.authService.usuario.admin|| this.authService.usuario.id === 1) {
       subMenuMantenimientos.push(this.subMenuUsuarios);
-     }
+     
      subMenuMantenimientos.push(this.subMenuMiPerfil);
 
      const menuMantenimientos : Menu = {
