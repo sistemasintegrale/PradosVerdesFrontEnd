@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioData } from 'src/app/models/usuario/usuario-data';
 import { SideBarService } from 'src/app/services/shared/side-bar.service';
@@ -30,7 +30,7 @@ export class SidebarComponent {
     color: 'text-red-500'
   };
 
-   
+
 
   subMenuRegistroContratos: SubMenu = {
     titulo: 'Registro de Contratos',
@@ -49,18 +49,19 @@ export class SidebarComponent {
   constructor(private sideBarService: SideBarService,
     private authService: AuthService,
     private router: Router) {
+      
     const menuDashboard: Menu = {
       titulo: "Main",
       submenu: [this.SubMenuMain]
     }
-   
-    const menuOperaciones : Menu ={
-      titulo : 'Operaciones',
-      submenu : [this.subMenuRegistroContratos]
+
+    const menuOperaciones: Menu = {
+      titulo: 'Operaciones',
+      submenu: [this.subMenuRegistroContratos]
     }
 
     const subMenuMantenimientos: SubMenu[] = [];
-    
+    if (this.authService.usuario.usua_icod_usuario === 4)
       subMenuMantenimientos.push(this.subMenuUsuarios);
 
     subMenuMantenimientos.push(this.subMenuMiPerfil);

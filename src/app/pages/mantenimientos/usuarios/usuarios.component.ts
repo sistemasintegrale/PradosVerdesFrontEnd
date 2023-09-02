@@ -40,32 +40,6 @@ export class UsuariosComponent {
         this.cargando = false;
       });
   }
-  cambiarPagina(valor: number) {
-    const valorAnterior = this.desde;
-    this.desde += valor;
-    if (this.desde < 0) {
-      this.desde = 0;
-    } else if (this.desde >= this.totalUsuarios) {
-      this.desde -= valor;
-    }
-    if (valorAnterior !== this.desde) {
-      this.cargarUsuarios();
-    }
-
-  }
-
-  getPaginationData(event: PageEvent): PageEvent {
-
-    return event;
-  }
-
-  buscar(termino: string) {
-    this.desde = 0;
-    this.nombre = termino;
-    this.cargarUsuarios();
-  }
-
-
 
   openAdd() {
     const dialogRef = this.dialog.open(UserDialogComponent, {
@@ -81,17 +55,13 @@ export class UsuariosComponent {
   }
 
   openEdit(usuario: UsuarioData) {
-    if (usuario.usua_icod_usuario === 1 && this.authService.usuario.usua_icod_usuario != 1)
-      return;
-
     this.usuarioService.getUsuario(usuario.usua_icod_usuario)
       .subscribe({
-        next: ((data) => {
-          usuario.usua_password_usuario = data.data.usua_password_usuario
+        next: ((data) => {          
           this.dialog.open(UserDialogComponent, {
             disableClose: false,
             width: '400px',
-            data: usuario
+            data: data
           }).afterClosed().subscribe(result => {
             if (result) {
               this.cargarUsuarios();
@@ -102,8 +72,6 @@ export class UsuariosComponent {
   }
 
   eliminarUsuario(usuario: UsuarioData) {
-    if (usuario.usua_icod_usuario === 1 && this.authService.usuario.usua_icod_usuario != 1)
-      return;
     Swal.fire({
       title: '¿Borrar usuario?',
       text: `Esta apunto de borrar a ${usuario.usua_nombre_usuario}`,

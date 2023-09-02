@@ -26,11 +26,6 @@ import { MiCuentaComponent } from './mantenimientos/mi-cuenta/mi-cuenta.componen
 import { UserDialogComponent } from './mantenimientos/usuarios/dialog/user-dialog/user-dialog.component';
 import { NgChartsModule } from 'ng2-charts';
 import {MatTabsModule} from '@angular/material/tabs';
-import { GraficoBarrasComponent } from './main/dashboard/grafico-barras/grafico-barras.component';
-import { GraficoLineaComponent } from './main/dashboard/grafico-linea/grafico-linea.component';
-import { CartaRadarComponent } from './main/dashboard/carta-radar/carta-radar.component';
-import { GraficoCircularComponent } from './main/dashboard/grafico-circular/grafico-circular.component';
-import { GraficoAreaPolarComponent } from './main/dashboard/grafico-area-polar/grafico-area-polar.component';
 import {MatRippleModule} from '@angular/material/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -44,11 +39,6 @@ import { RegistroDeContratosComponent } from './operaciones/registro-de-contrato
     UsuariosComponent,
     MiCuentaComponent,
     UserDialogComponent,
-    GraficoBarrasComponent,
-    GraficoLineaComponent,
-    CartaRadarComponent,
-    GraficoCircularComponent,
-    GraficoAreaPolarComponent,
     RegistroDeContratosComponent,
     
   ],

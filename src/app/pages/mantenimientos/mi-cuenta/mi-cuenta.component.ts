@@ -30,24 +30,24 @@ export class MiCuentaComponent implements OnInit {
     this.usuarioService.getUsuario(this.authservice.usuario.usua_icod_usuario)
       .subscribe({
         next: (data => {
-          this.usuario = data.data;
+          this.usuario = data;
           this.cargar()
         })
       });
   }
-    cargar() {
- 
+  cargar() {
+
 
     this.registerForm = new FormGroup({
       nombre: new FormControl(this.usuario ? this.usuario.usua_nombre_usuario : '', [Validators.required]),
-      codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),    
+      codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),
       password: new FormControl(this.usuario ? this.usuario.usua_password_usuario : '', [Validators.required]),
       estado: new FormControl(this.usuario ? this.usuario.usua_iactivo : true, [Validators.required])
     });
   }
   registerForm = new FormGroup({
     nombre: new FormControl(this.usuario ? this.usuario.usua_nombre_usuario : '', [Validators.required]),
-    codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),    
+    codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),
     password: new FormControl(this.usuario ? this.usuario.usua_password_usuario : '', [Validators.required]),
     estado: new FormControl(this.usuario ? this.usuario.usua_iactivo : true, [Validators.required])
   });
@@ -56,12 +56,12 @@ export class MiCuentaComponent implements OnInit {
   campoNoValido(campo: string): boolean {
     return this.registerForm.get(campo)?.invalid! && this.formSubmitted;
   }
-   
 
-  openChangePassword(){
+
+  openChangePassword() {
     const dialogRef = this.dialog.open(ChangePasswordComponent, {
       width: '400px',
-      disableClose: false, 
+      disableClose: false,
       data: this.usuario
     });
 
@@ -70,12 +70,12 @@ export class MiCuentaComponent implements OnInit {
       if (result.update) {
         const data: RegisterForm = {
           nombre: this.registerForm.controls.nombre.value!,
-          codigo: this.registerForm.controls.codigo.value!,         
+          codigo: this.registerForm.controls.codigo.value!,
           password: result.newPasss,
           password2: result.newPasss,
           estado: this.registerForm.controls.estado.value!
         }
-    
+
         this.usuarioService
           .modificarUsuario(data, this.usuario.usua_icod_usuario)
           .subscribe({
@@ -83,7 +83,7 @@ export class MiCuentaComponent implements OnInit {
               this.usuarioService.getUsuario(this.authservice.usuario.usua_icod_usuario)
                 .subscribe({
                   next: (data => {
-                    this.usuario = data.data;
+                    this.usuario = data;
                     this.cargar()
                   })
                 });
@@ -121,7 +121,7 @@ export class MiCuentaComponent implements OnInit {
           this.usuarioService.getUsuario(this.authservice.usuario.usua_icod_usuario)
             .subscribe({
               next: (data => {
-                this.usuario = data.data;
+                this.usuario = data;
                 this.cargar()
               })
             });

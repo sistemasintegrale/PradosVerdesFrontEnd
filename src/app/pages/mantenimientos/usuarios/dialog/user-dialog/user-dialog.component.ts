@@ -18,9 +18,7 @@ export class UserDialogComponent implements OnInit {
   public formSubmitted = false;
   public registerForm!: FormGroup;
   public admin!: boolean;
-  public estados = [
-    { value: true, descripcion: 'Activo' }, { value: false, descripcion: 'Inactivo' }
-  ]
+  public estados = [{ value: true, descripcion: 'Activo' }, { value: false, descripcion: 'Inactivo' }]
 
   constructor(
     public dialogRef: MatDialogRef<UserDialogComponent>,
@@ -35,52 +33,27 @@ export class UserDialogComponent implements OnInit {
       this.titulo = 'Nuevo usuario';
 
     }
+
+    console.log(this.usuario)
   }
     ngOnInit() {
-
-
-
 
     this.registerForm = new FormGroup({
       nombre: new FormControl(this.usuario ? this.usuario.usua_nombre_usuario : '', [Validators.required]),
       codigo: new FormControl(this.usuario ? this.usuario.usua_codigo_usuario : '', [Validators.required]),
       password: new FormControl(this.usuario ? this.usuario.usua_password_usuario : '', [Validators.required]),
-      estado: new FormControl(this.usuario ? this.usuario.usua_iactivo : true, [Validators.required]),    
-    });
-     
+      estado: new FormControl(this.usuario ? this.usuario.usua_iactivo : true, [Validators.required]),   
+      web: new FormControl(this.usuario ? this.usuario.usua_bweb : true, [Validators.required]),    
+    });     
   }
-
-
-  
-  
-
   close() {
     this.dialogRef.close();
-  }
-
-  validarUsuario(): boolean {
-    const usuario = this.registerForm.value;
-    if(!usuario.admin)
-    {
-      if(usuario.codigoClienteNG === 0 && usuario.codigoClienteNM === 0){
-        Swal.fire(
-          'Alerta!',
-          `Si el Usuario ${usuario.nombre} no es administrador, seccione cliente Nova Glass o Nova Motos`,
-          'error'
-        );
-        return false  ;
-      }
-
-    }
-    return true;
   }
 
   addUsuario() {
     this.formSubmitted = true;
     if (this.registerForm.invalid)
-      return;
-    if (!this.validarUsuario())
-      return
+      return;     
     this.usuarioService.crearUsuario(this.registerForm.value)
       .subscribe({
         next: ((data) => {
@@ -101,8 +74,6 @@ export class UserDialogComponent implements OnInit {
     this.formSubmitted = true;
     if (this.registerForm.invalid)
       return;
-    if (!this.validarUsuario())
-      return
     this.usuarioService
       .modificarUsuario(this.registerForm.value, this.usuario.usua_icod_usuario)
       .subscribe({
@@ -123,9 +94,6 @@ export class UserDialogComponent implements OnInit {
   campoNoValido(campo: string): boolean {
     return this.registerForm.get(campo)?.invalid! && this.formSubmitted;
   }
-
-
-
   cambiarTipo(valor: boolean) {
     let elemento: any = document.getElementById('contraseña');
     this.verPassword = valor;
@@ -134,8 +102,5 @@ export class UserDialogComponent implements OnInit {
     } else {
       elemento.type = "password";
     }
-
   }
-
-
 }
