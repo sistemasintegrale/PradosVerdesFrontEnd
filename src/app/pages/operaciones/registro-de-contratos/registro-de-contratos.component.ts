@@ -9,6 +9,8 @@ import { TablaVentasDetalle } from 'src/app/interfaces/tabla-ventas/tabla-ventas
 import { Vendedor } from 'src/app/interfaces/vendedor/vendedor';
 import { TablaRegistro } from 'src/app/interfaces/tabla/tabla-registro';
 import { GeneralService } from 'src/app/services/general/general.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MantimientoContratosComponent } from '../mantimiento-contratos/mantimiento-contratos.component';
 
 @Component({
   selector: 'app-registro-de-contratos',
@@ -24,6 +26,7 @@ export class RegistroDeContratosComponent implements OnInit {
   public range!: FormGroup
   private contratoService = inject(ContratoService);
   private generalService = inject(GeneralService);
+  public dialog = inject(MatDialog);
   private origenVenta: TablaVentasDetalle[] = [];
   private codigoPlan: TablaVentasDetalle[] = [];
   private tipoSepultura: TablaVentasDetalle[] = [];
@@ -57,16 +60,16 @@ export class RegistroDeContratosComponent implements OnInit {
     ]);
   }
 
-  getOrigenVenta = (icod: number): string => icod === null ? '' : this.origenVenta.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.origenVenta.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
-  getCodigoPlan = (icod: number): string => icod === null ? '' : this.codigoPlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.codigoPlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
-  getTipoSepultura = (icod: number): string => icod === null ? '' : this.tipoSepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.tipoSepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
-  getPlataforma = (icod: number): string => icod === null ? '' : this.plataforma.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.plataforma.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
-  getManzana = (icod: number): string => icod === null ? '' : this.manzana.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.manzana.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
-  getVendedor = (icod: number): string => icod === null ? '' : this.vendedor.filter(x => x.vendc_icod_vendedor === icod)[0] === undefined ?"" : this.vendedor.filter(x => x.vendc_icod_vendedor === icod)[0].vendc_vnombre_vendedor!;
-  getNombrePlan = (icod: number): string => icod === null ? '' : this.nombrePlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.nombrePlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
-  getSituacion = (icod: number): string => icod === null ? '' : this.situacion.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.situacion.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
-  getTipoPago = (icod: number): string => icod === null ? '' : this.tipoPago.filter(x => x.tarec_iid_tabla_registro === icod)[0] === undefined ?"" : this.tipoPago.filter(x => x.tarec_iid_tabla_registro === icod)[0].tarec_vdescripcion!;
-  getSepultura = (icod: number): string => icod === null ? '' : this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined  ?"" :this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getOrigenVenta = (icod: number): string => icod === null ? '' : this.origenVenta.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.origenVenta.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getCodigoPlan = (icod: number): string => icod === null ? '' : this.codigoPlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.codigoPlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getTipoSepultura = (icod: number): string => icod === null ? '' : this.tipoSepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.tipoSepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getPlataforma = (icod: number): string => icod === null ? '' : this.plataforma.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.plataforma.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getManzana = (icod: number): string => icod === null ? '' : this.manzana.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.manzana.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getVendedor = (icod: number): string => icod === null ? '' : this.vendedor.filter(x => x.vendc_icod_vendedor === icod)[0] === undefined ? "" : this.vendedor.filter(x => x.vendc_icod_vendedor === icod)[0].vendc_vnombre_vendedor!;
+  getNombrePlan = (icod: number): string => icod === null ? '' : this.nombrePlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.nombrePlan.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getSituacion = (icod: number): string => icod === null ? '' : this.situacion.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.situacion.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
+  getTipoPago = (icod: number): string => icod === null ? '' : this.tipoPago.filter(x => x.tarec_iid_tabla_registro === icod)[0] === undefined ? "" : this.tipoPago.filter(x => x.tarec_iid_tabla_registro === icod)[0].tarec_vdescripcion!;
+  getSepultura = (icod: number): string => icod === null ? '' : this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
 
   obtenerPrimeraFechaDelAño(): string {
     const year = new Date().getFullYear();
@@ -100,8 +103,16 @@ export class RegistroDeContratosComponent implements OnInit {
   }
 
   openAdd() {
-    console.log(this.contrato)
-  }
+    this.dialog.open(MantimientoContratosComponent, {
+      width: '750px',
+      disableClose: true,
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.cargarContratos();
+      }
+    });
+  };
+
 
   openEdit(contrato: Contrato) {
   }

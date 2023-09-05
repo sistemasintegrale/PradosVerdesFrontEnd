@@ -30,6 +30,8 @@ import {MatRippleModule} from '@angular/material/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RegistroDeContratosComponent } from './operaciones/registro-de-contratos/registro-de-contratos.component';
+import { MantimientoContratosComponent } from './operaciones/mantimiento-contratos/mantimiento-contratos.component';
+ 
 
 
 @NgModule({
@@ -40,6 +42,7 @@ import { RegistroDeContratosComponent } from './operaciones/registro-de-contrato
     MiCuentaComponent,
     UserDialogComponent,
     RegistroDeContratosComponent,
+    MantimientoContratosComponent,
     
   ],
   imports: [

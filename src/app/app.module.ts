@@ -16,6 +16,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptors';
 import locale from "@angular/common/locales/es-PE";
 import { registerLocaleData } from "@angular/common";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask'
 
 registerLocaleData(locale);
 
@@ -31,11 +32,16 @@ registerLocaleData(locale);
     AuthModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxMaskDirective, 
+    NgxMaskPipe
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    provideNgxMask()
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+  ]
 })
 export class AppModule { }
