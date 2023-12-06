@@ -1,4 +1,4 @@
-import { map, pipe } from 'rxjs';
+import { map, pipe, filter } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BaseResponse } from 'src/app/interfaces/comon/base-response';
@@ -18,5 +18,18 @@ export class ContratoService {
 
   ListarContratosPorFechas(filters : ContratoFilters){
     return this.http.post<BaseResponse<Contrato[]>>(`${base_url}/Contrato`,filters).pipe(map(res => res.data));
+  }
+
+  ValidarSerie(serie : string){
+    return this.http.get<BaseResponse<boolean>>(`${base_url}/Contrato/ValidarSerie/${serie}`).pipe(map(res => res.data));
+  }
+
+  Guardar(contrato : Contrato){
+ 
+    return this.http.post<BaseResponse<number>>(`${base_url}/Contrato/Guardar`,contrato).pipe(map(res => res.data));
+  }
+
+  Eliminar(id:number){
+    return this.http.get<BaseResponse<boolean>>(`${base_url}/Contrato/Eliminar/${id}`).pipe(map(res => res.data));
   }
 }

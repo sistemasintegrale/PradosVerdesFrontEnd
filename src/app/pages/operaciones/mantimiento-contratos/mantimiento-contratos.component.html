@@ -5,16 +5,17 @@
     <form class="flex w-full flex-col gap-3 pt-2" autocomplete="off" [formGroup]="registerForm">
         <div class="flex flex-wrap items-end gap-3">
             <div class="relative min-w-[3rem] max-w-[5rem] w-full">
-                <label for="cntc_vnumero_solicitud"
-                    class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
+                <label for="serie" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Serie :</label>
-                <input type="text" id="cntc_vnumero_solicitud" formControlName="cntc_vnumero_solicitud"
+                <input type="text" id="serie" formControlName="serie" readonly="true"
                     class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
             <div class="relative min-w-[5rem] max-w-[9rem] w-full">
-                <label for="x" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
+                <label for="cntc_vnumero_contrato"
+                    class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                 </label>
-                <input type="text" id="x"
+                <input type="text" id="cntc_vnumero_contrato" formControlName="cntc_vnumero_contrato" #miInput
+                    (input)="numeroChange()" (blur)="onBlur($event)"
                     class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
             <div class="relative min-w-[5rem] max-w-[13rem] w-full">
@@ -25,11 +26,13 @@
                     class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
             <div class="relative min-w-[5rem] max-w-[13rem] w-full">
-                <label for="cntc_iestado_sol" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
+                <label for="cntc_icod_situacion"
+                    class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Situación :</label>
-                <select type="search" id="cntc_iestado_sol" formControlName="cntc_iestado_sol"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option *ngFor="let item of situacion" [value]=item.tabvd_iid_tabla_venta_det>{{item.tabvd_vdescripcion}}</option>
+                <select type="search" id="cntc_icod_situacion" formControlName="cntc_icod_situacion"
+                    class="px-4 py-1 h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of situacion" [value]=item.tabvd_iid_tabla_venta_det>
+                        {{item.tabvd_vdescripcion}}</option>
                 </select>
             </div>
         </div>
@@ -39,8 +42,9 @@
                     class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Nombre IEC :</label>
                 <select type="text" id="cntc_icod_vendedor" formControlName="cntc_icod_vendedor"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option *ngFor="let item of vendedor" [value]=item.vendc_icod_vendedor>{{item.vendc_vnombre_vendedor}}</option>
+                    class=" px-4 py-1 h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of vendedor" [value]=item.vendc_icod_vendedor>
+                        {{item.vendc_vnombre_vendedor}}</option>
                 </select>
             </div>
             <div class="relative w-full min-w-[5rem] max-w-[11rem]">
@@ -48,8 +52,9 @@
                     class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Origen :</label>
                 <select type="search" id="cntc_iorigen_venta" formControlName="cntc_iorigen_venta"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option *ngFor="let item of origenVenta" [value]=item.tabvd_iid_tabla_venta_det>{{item.tabvd_vdescripcion}}</option>
+                    class=" px-4 py-1 h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of origenVenta" [value]=item.tabvd_iid_tabla_venta_det>
+                        {{item.tabvd_vdescripcion}}</option>
                 </select>
             </div>
             <div class="relative w-full min-w-[5rem] max-w-[15rem]">
@@ -57,62 +62,61 @@
                     class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Funerarias :</label>
                 <select type="search" id="cntc_icod_funeraria" formControlName="cntc_icod_funeraria"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
+                    class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of funerarias" [value]=item.func_icod_funeraria>
+                        {{item.func_vnombre_comercial}}</option>
                 </select>
             </div>
         </div>
         <div class="flex flex-wrap items-end gap-3">
-            <div class="relative   w-full min-w-[5rem] max-w-[10rem]">
+            <div class="relative   w-full min-w-[5rem]  ">
                 <label for="cntc_itipo_doc_prestamo"
                     class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Obs. AC doc. pago :</label>
                 <select type="text" id="cntc_itipo_doc_prestamo" formControlName="cntc_itipo_doc_prestamo"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of docPago" [value]=item.tarec_iid_tabla_registro>
+                        {{item.tarec_vdescripcion}}</option>
                 </select>
             </div>
-            <div class="relative   w-full min-w-[5rem] max-w-[32rem]">
-                <label for="func_icod_funeraria_prestamo"
-                    class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
-                    Prestamo :</label>
-                <select type="search" id="func_icod_funeraria_prestamo" formControlName="func_icod_funeraria_prestamo"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                </select>
-            </div>
         </div>
         <div class="w-full border rounded border-indigo-700 p-2">
             <mat-tab-group>
                 <mat-tab label="Datos Titular Contratante">
                     <div class="flex flex-wrap items-end gap-3  ">
-                        <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
+                        <div class="relative   w-full min-w-[5rem] max-w-[13rem] mt-2">
                             <label for="cntc_vnombre_contratante"
                                 class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                                 Nombre :</label>
                             <input type="text" id="cntc_vnombre_contratante" formControlName="cntc_vnombre_contratante"
                                 class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
-                        <div class="relative   w-full min-w-[5rem] max-w-[20rem] mt-2">
+                        <div class="relative   w-full min-w-[5rem] max-w-[13rem] mt-2">
                             <label for="cntc_itipo_documento_contratante"
                                 class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                                 Tipo Doc. :</label>
                             <select type="search" id="cntc_itipo_documento_contratante"
                                 formControlName="cntc_itipo_documento_contratante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
+                                class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option *ngFor="let item of tipoDoc" [value]=item.tarec_iid_tabla_registro>
+                                    {{item.tarec_vdescripcion}}</option>
                             </select>
                         </div>
-                        <div class="relative   w-full min-w-[5rem] max-w-[9rem] mt-2">
-                            <label for="cntc_vdocumento_contratante"
+                        <div class="relative   w-full min-w-[5rem] max-w-[13rem] mt-2">
+                            <label for="cntc_vdocumento_contratante" 
                                 class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                                 Doc. :</label>
-                            <input type="text" id="cntc_vdocumento_contratante"
+                            <span *ngIf="chargeDniData" class="!absolute right-1  z-10  text-center align-middle ">
+                                <i class="fa-li fa fa-spinner fa-spin "></i>
+                            </span>
+                            <input type="text" id="cntc_vdocumento_contratante" (input)="DniTitularChange()"
                                 formControlName="cntc_vdocumento_contratante"
                                 class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                     </div>
                     <div class="flex flex-wrap items-end gap-3  ">
-                        <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
+                        <div class="relative   w-full min-w-[5rem] max-w-[30rem] mt-2">
                             <label for="cntc_vapellido_paterno_contratante"
                                 class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                                 Apellido Pat. :</label>
@@ -120,7 +124,7 @@
                                 formControlName="cntc_vapellido_paterno_contratante"
                                 class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
-                        <div class="relative   w-full min-w-[5rem] max-w-[30rem] mt-2">
+                        <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
                             <label for="cntc_vruc_contratante"
                                 class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                                 Ruc. :</label>
@@ -179,13 +183,15 @@
                                 Nacionalidad:</label>
                             <select type="date" id="cntc_inacionalidad_contratante"
                                 formControlName="cntc_inacionalidad_contratante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option *ngFor="let item of nacionalidad" [value]=item.tarec_iid_tabla_registro>
+                                    {{item.tarec_vdescripcion}}</option>
                             </select>
                         </div>
                     </div>
 
                 </mat-tab>
-                <mat-tab label="Datos Rep. o Persona Autoriza">
+                <!-- <mat-tab label="Datos Rep. o Persona Autoriza">
 
                     <div class="flex flex-wrap items-end gap-3  ">
                         <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
@@ -228,14 +234,20 @@
                                 Tipo Doc. :</label>
                             <select type="search" id="cntc_itipo_documento_representante"
                                 formControlName="cntc_itipo_documento_representante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option *ngFor="let item of tipoDoc" [value]=item.tarec_iid_tabla_registro>
+                                    {{item.tarec_vdescripcion}}</option>
                             </select>
                         </div>
                         <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
                             <label for="cntc_vdocumento_respresentante"
                                 class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                                 Doc. :</label>
-                            <input type="text" id="cntc_vdocumento_respresentante"
+                            <span *ngIf="chargeDniData" class="!absolute right-1  z-10  text-center align-middle ">
+                                <i class="fa-li fa fa-spinner fa-spin "></i>
+                            </span>
+                            
+                            <input (input)="DniChange()" type="text" id="cntc_vdocumento_respresentante"
                                 formControlName="cntc_vdocumento_respresentante"
                                 class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
@@ -256,7 +268,9 @@
                                 Estado Civil. :</label>
                             <select type="search" id="cntc_iestado_civil_representante"
                                 formControlName="cntc_iestado_civil_representante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="px-4 py-1 h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option *ngFor="let item of estadoCivil" [value]=item.tarec_iid_tabla_registro>
+                                    {{item.tarec_vdescripcion}}</option>
                             </select>
                         </div>
                         <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
@@ -265,7 +279,9 @@
                                 Nacionalidad. :</label>
                             <select type="text" id="cntc_inacionalidad_respresentante"
                                 formControlName="cntc_inacionalidad_respresentante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class=" px-4 py-1 h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option *ngFor="let item of nacionalidad" [value]=item.tarec_iid_tabla_registro>
+                                    {{item.tarec_vdescripcion}}</option>
                             </select>
                         </div>
                     </div>
@@ -291,59 +307,54 @@
                     </div>
 
                     <div class="flex flex-wrap items-end gap-3  ">
-                        <div class="relative   w-full min-w-[5rem] max-w-[9rem] mt-2">
-                            <label for="cntc_vnumero_direccion_representante"
-                                class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
-                                N° :</label>
-                            <input type="text" id="cntc_vnumero_direccion_representante"
-                                formControlName="cntc_vnumero_direccion_representante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
-                        <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
-                            <label for="cntc_vdepartamento_representante"
-                                class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
-                                Dpt :</label>
-                            <input type="text" id="cntc_vdepartamento_representante"
-                                formControlName="cntc_vdepartamento_representante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
-                        <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
+
+                        <div class="relative   w-full min-w-[5rem]   mt-2">
                             <label for="cntc_idistrito_representante"
                                 class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                                 Distrito :</label>
                             <select type="text" id="cntc_idistrito_representante"
                                 formControlName="cntc_idistrito_representante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option *ngFor="let item of distritos" [value]=item.disc_icod_distrito>
+                                    {{item.disc_vdescripcion}}</option>
                             </select>
                         </div>
-                        <div class="relative   w-full min-w-[5rem] max-w-[10rem] mt-2">
-                            <label for="cntc_vcodigo_postal_representante"
-                                class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
-                                Cod. postal :</label>
-                            <input type="text" id="cntc_vcodigo_postal_representante"
-                                formControlName="cntc_vcodigo_postal_representante"
-                                class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
+
 
                     </div>
 
-                </mat-tab>
+                </mat-tab> -->
             </mat-tab-group>
         </div>
         <div class="flex flex-wrap items-end gap-3  ">
-            <div class="relative   w-full min-w-[5rem] max-w-[15rem]">
+            <div class="relative   w-full min-w-[4rem] max-w-[13rem]">
                 <label for="cntc_icodigo_plan" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Código Plan :</label>
                 <select type="text" id="cntc_icodigo_plan" formControlName="cntc_icodigo_plan"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of codigoPlan" [value]=item.tabvd_iid_tabla_venta_det>
+                        {{item.tabvd_vdesc_abreviado}}</option>
                 </select>
             </div>
-            <div class="relative   w-full min-w-[5rem] max-w-[27rem]">
+            <div class="relative   w-full min-w-[4rem] max-w-[13rem]">
                 <label for="cntc_icod_nombre_plan"
                     class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Nombre Plan :</label>
                 <select type="date" id="cntc_icod_nombre_plan" formControlName="cntc_icod_nombre_plan"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of nombrePlan" [value]=item.tabvd_iid_tabla_venta_det>
+                        {{item.tabvd_vdescripcion}}</option>
+                </select>
+            </div>
+
+            <div class="relative   w-full min-w-[4rem] max-w-[13rem]">
+                <label for="cntc_itipo_sepultura"
+                    class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
+                    Tipo Espacio :</label>
+                <select type="date" id="cntc_itipo_sepultura" formControlName="cntc_itipo_sepultura" (change)="TipoEstapcioChange($event)"
+                    class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of tipoSepultura" [value]=item.tabvd_iid_tabla_venta_det>
+                        {{item.tabvd_vdescripcion}}</option>
                 </select>
             </div>
         </div>
@@ -371,7 +382,9 @@
                 <label for="cntc_icod_deceso" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Deceso :</label>
                 <select type="text" id="cntc_icod_deceso" formControlName="cntc_icod_deceso"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="h-7 px-4 py-1  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of deceso" [value]=item.tabvd_iid_tabla_venta_det>
+                        {{item.tabvd_vdesc_abreviado}}</option>
                 </select>
             </div>
             <div class="relative   w-full min-w-[5rem] max-w-[5rem]">
@@ -388,7 +401,9 @@
                     class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Foma Mantenimiento :</label>
                 <select type="text" id="cntc_icod_foma_mante" formControlName="cntc_icod_foma_mante"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of fomaMantenimiento" [value]=item.tabvd_iid_tabla_venta_det>
+                        {{item.tabvd_vdescripcion}}</option>
                 </select>
             </div>
             <div class="relative   w-full min-w-[2rem] max-w-[5rem]">
@@ -417,7 +432,9 @@
                 <label for="cntc_itipo_pago" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
                     Tipo Pago :</label>
                 <select type="date" id="cntc_itipo_pago" formControlName="cntc_itipo_pago"
-                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="h-7 px-4 py-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option *ngFor="let item of tipoPago" [value]=item.tarec_iid_tabla_registro>
+                        {{item.tarec_vdescripcion}}</option>
                 </select>
             </div>
         </div>
@@ -449,14 +466,23 @@
                     class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
         </div>
-        <!-- <div class="flex flex-wrap items-end gap-3  ">
-                <div class="relative   w-full min-w-[20rem] max-w-[20rem]">
-                    <label for="first_name" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
-                        Precio Total :</label>
-                    <input type="text" id="first_name"
-                        class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                </div>
-            </div> -->
+        <div class="flex flex-wrap items-end gap-3  ">
+
+            <div class="relative   w-full min-w-[5rem] max-w-[10rem]">
+                <label for="cntc_sfecha_inicio_pago"
+                    class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
+                    Fecha Incio Pago :</label>
+                <input type="date" id="cntc_sfecha_inicio_pago" formControlName="cntc_sfecha_inicio_pago"
+                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+            <div class="relative   w-full min-w-[5rem] max-w-[10rem]">
+                <label for="cntc_sfecha_fin_pago"
+                    class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
+                    Fecha Fin Pago :</label>
+                <input type="date" id="cntc_sfecha_fin_pago" formControlName="cntc_sfecha_fin_pago"
+                    class="h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+        </div>
 
     </form>
 </div>

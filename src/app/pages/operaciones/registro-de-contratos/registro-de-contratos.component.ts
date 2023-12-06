@@ -11,6 +11,8 @@ import { TablaRegistro } from 'src/app/interfaces/tabla/tabla-registro';
 import { GeneralService } from 'src/app/services/general/general.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MantimientoContratosComponent } from '../mantimiento-contratos/mantimiento-contratos.component';
+import { Funerarias } from 'src/app/interfaces/Funerarias/funerarioas';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-de-contratos',
@@ -28,15 +30,16 @@ export class RegistroDeContratosComponent implements OnInit {
   private generalService = inject(GeneralService);
   public dialog = inject(MatDialog);
   private origenVenta: TablaVentasDetalle[] = [];
-  private codigoPlan: TablaVentasDetalle[] = [];
-  private tipoSepultura: TablaVentasDetalle[] = [];
-  private plataforma: TablaVentasDetalle[] = [];
-  private manzana: TablaVentasDetalle[] = [];
-  private vendedor: Vendedor[] = [];
-  private nombrePlan: TablaVentasDetalle[] = [];
-  private situacion: TablaVentasDetalle[] = [];
-  private tipoPago: TablaRegistro[] = [];
-  private sepultura: TablaVentasDetalle[] = [];
+  public funerarias : Funerarias[]=[];
+  public codigoPlan: TablaVentasDetalle[] = [];
+  public tipoSepultura: TablaVentasDetalle[] = [];
+  public plataforma: TablaVentasDetalle[] = [];
+  public manzana: TablaVentasDetalle[] = [];
+  public vendedor: Vendedor[] = [];
+  public nombrePlan: TablaVentasDetalle[] = [];
+  public situacion: TablaVentasDetalle[] = [];
+  public tipoPago: TablaRegistro[] = [];
+  public sepultura: TablaVentasDetalle[] = [];
 
   async ngOnInit() {
     this.range = new FormGroup({
@@ -56,7 +59,8 @@ export class RegistroDeContratosComponent implements OnInit {
       this.generalService.tablaVentasDetalle(13).subscribe(res => this.nombrePlan = res),
       this.generalService.tablaVentasDetalle(14).subscribe(res => this.situacion = res),
       this.generalService.tablaRegistro(97).subscribe(res => this.tipoPago = res),
-      this.generalService.tablaVentasDetalle(12).subscribe(res => this.sepultura = res)
+      this.generalService.tablaVentasDetalle(12).subscribe(res => this.sepultura = res),
+      this.generalService.Funerarias().subscribe(res => this.funerarias = res)
     ]);
   }
 
@@ -72,6 +76,7 @@ export class RegistroDeContratosComponent implements OnInit {
   getSepultura = (icod: number): string => icod === null ? '' : this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
 
   obtenerPrimeraFechaDelAño(): string {
+    
     const year = new Date().getFullYear();
     const firstDay = new Date(year, 0, 1);
     const formattedDate = `${firstDay.getFullYear()}-${(firstDay.getMonth() + 1).toString().padStart(2, '0')}-${firstDay.getDate().toString().padStart(2, '0')}`;
@@ -96,7 +101,6 @@ export class RegistroDeContratosComponent implements OnInit {
     this.filters.fechaInicio = this.convertDateFormat(this.range.value.fechaInicio);
     this.filters.fechaFinal = this.convertDateFormat(this.range.value.fechaFinal);
     this.contratoService.ListarContratosPorFechas(this.filters).subscribe((resp) => {
-      debugger
       this.contratos = resp
       this.cargando = false;
     });
@@ -115,9 +119,41 @@ export class RegistroDeContratosComponent implements OnInit {
 
 
   openEdit(contrato: Contrato) {
+
+    console.table(contrato)
+
+    this.dialog.open(MantimientoContratosComponent, {
+      width: '750px',
+      disableClose: true,
+      data : contrato
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.cargarContratos();
+      }
+    });
   }
 
   eliminar(contrato: Contrato) {
+    Swal.fire({
+      title: '¿Borrar Contrato?',
+      text: `Esta apunto de borrar  ${contrato.cntc_vnumero_contrato}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si, borrarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.contratoService.Eliminar(contrato.cntc_icod_contrato)
+          .subscribe(resp => {
+            Swal.fire(
+              'Contrato borrado',
+              `${contrato.cntc_vnumero_contrato} fué borrado correctamente`,
+              'success'
+            );
+            this.cargarContratos();
+          }
+          );
+      }
+    })
   }
 
   exportarExcel() {

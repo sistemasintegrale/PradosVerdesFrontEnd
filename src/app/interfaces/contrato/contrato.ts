@@ -127,4 +127,6 @@ export interface Contrato {
     cntc_vnumero_solicitud: string | null,
     cntc_iestado_sol: number | null,
     cntc_vobservaciones_sol: string | null,
+    cntc_sfecha_inicio_pago: string | null,
+    cntc_sfecha_fin_pago: string | null,
 }

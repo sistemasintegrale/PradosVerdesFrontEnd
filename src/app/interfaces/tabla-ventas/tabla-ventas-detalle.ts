@@ -4,4 +4,5 @@ export interface TablaVentasDetalle {
     tabvd_vdesc_abreviado: string | null;
     tabvd_iid_tabla_venta_det: number;
     tabvd_cestado: string | null;
+    tabvd_icod_ref : number | null;
 }

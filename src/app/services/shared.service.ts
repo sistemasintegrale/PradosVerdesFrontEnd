@@ -1,9 +1,18 @@
-import { Injectable } from '@angular/core';
+import { UsuarioApiResponse } from './../models/api-models/UsuarioAPI.response';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { format } from 'date-fns';
+import { environment } from 'src/environments/environments';
+
+const base_url = environment.base_url;
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
+
+  private _http = inject(HttpClient)
 
   obtenerPrimeraFechaDelAño(): string {
     const year = new Date().getFullYear();
@@ -29,6 +38,15 @@ export class SharedService {
     const dia = fecha.getDate().toString().padStart(2, '0');
     const fechaFormateada = `${año}-${mes}-${dia}`;
     return fechaFormateada;
+  }
+
+  DateToInput(fecha: string): string {
+    const parsedDate = new Date(fecha);
+    return format(parsedDate, 'yyyy-MM-dd');
+  }
+
+  ObtenerDatosDni(dni : string): Observable<UsuarioApiResponse> {
+    return this._http.get<UsuarioApiResponse>(`${base_url}/ApiProviders/${dni}`);
   }
 
 }
