@@ -15,29 +15,33 @@ const base_url = environment.base_url;
 })
 export class GeneralService {
 
-  private http = inject(HttpClient); 
+  private http = inject(HttpClient);
 
-  tablaVentasDetalle(icod : number) : Observable<TablaVentasDetalle[]>{
-    return this.http.get<BaseResponse<TablaVentasDetalle[]>>(`${base_url}/General/TablaVentasdetalle/${icod}`).pipe(map(res =>res.data));
+  tablaVentasDetalle(icod: number): Observable<TablaVentasDetalle[]> {
+    return this.http.get<BaseResponse<TablaVentasDetalle[]>>(`${base_url}/General/TablaVentasdetalle/${icod}`).pipe(map(res => res.data));
   }
 
-  tablaRegistro(icod : number): Observable<TablaRegistro[]>{
-    return this.http.get<BaseResponse<TablaRegistro[]>>(`${base_url}/General/TablaRegistro/${icod}`).pipe(map(res =>res.data));
+  tablaRegistro(icod: number): Observable<TablaRegistro[]> {
+    return this.http.get<BaseResponse<TablaRegistro[]>>(`${base_url}/General/TablaRegistro/${icod}`).pipe(map(res => res.data));
   }
 
-  vendedores(): Observable<Vendedor[]>{
-    return this.http.get<BaseResponse<Vendedor[]>>(`${base_url}/General/Vendedores`).pipe(map(res =>res.data));
+  vendedores(): Observable<Vendedor[]> {
+    return this.http.get<BaseResponse<Vendedor[]>>(`${base_url}/General/Vendedores`).pipe(map(res => res.data));
   }
 
-  Funerarias(): Observable<Funerarias[]>{
-    return this.http.get<BaseResponse<Funerarias[]>>(`${base_url}/Contrato/Funerarias`).pipe(map(res =>res.data));
+  Funerarias(): Observable<Funerarias[]> {
+    return this.http.get<BaseResponse<Funerarias[]>>(`${base_url}/Contrato/Funerarias`).pipe(map(res => res.data));
   }
 
-  Distritos(): Observable<Distrito[]>{
-    return this.http.get<BaseResponse<Distrito[]>>(`${base_url}/Contrato/Distritos`).pipe(map(res =>res.data));
+  Distritos(): Observable<Distrito[]> {
+    return this.http.get<BaseResponse<Distrito[]>>(`${base_url}/Contrato/Distritos`).pipe(map(res => res.data));
   }
 
-  Parametro():  Observable<Parametro>{
-    return this.http.get<BaseResponse<Parametro>>(`${base_url}/Contrato/Parametro`).pipe(map(res =>res.data));
+  Parametro(): Observable<Parametro> {
+    return this.http.get<BaseResponse<Parametro>>(`${base_url}/Contrato/Parametro`).pipe(map(res => res.data));
+  }
+
+  TipoSepulturaByPlan(tipoPlan: number, nombrePlan: number): Observable<TablaVentasDetalle[]> {
+    return this.http.get<BaseResponse<TablaVentasDetalle[]>>(`${base_url}/General/TipoSepultura/${tipoPlan}/${nombrePlan}`).pipe(map(res => res.data));
   }
 }

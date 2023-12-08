@@ -25,25 +25,26 @@ import { DashboardComponent } from './main/dashboard/dashboard.component';
 import { MiCuentaComponent } from './mantenimientos/mi-cuenta/mi-cuenta.component';
 import { UserDialogComponent } from './mantenimientos/usuarios/dialog/user-dialog/user-dialog.component';
 import { NgChartsModule } from 'ng2-charts';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatRippleModule} from '@angular/material/core';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatRippleModule } from '@angular/material/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RegistroDeContratosComponent } from './operaciones/registro-de-contratos/registro-de-contratos.component';
 import { MantimientoContratosComponent } from './operaciones/mantimiento-contratos/mantimiento-contratos.component';
- 
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+
 
 
 @NgModule({
   declarations: [
     PagesComponent,
-    DashboardComponent,    
+    DashboardComponent,
     UsuariosComponent,
     MiCuentaComponent,
     UserDialogComponent,
     RegistroDeContratosComponent,
     MantimientoContratosComponent,
-    
+
   ],
   imports: [
     CommonModule,
@@ -70,12 +71,14 @@ import { MantimientoContratosComponent } from './operaciones/mantimiento-contrat
     MatTabsModule,
     MatRippleModule,
     TableModule,
-    ButtonModule
+    ButtonModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   exports: [
     DashboardComponent,
     PagesComponent,
-      
+
     //AccountSettingsComponent,
   ]
 })

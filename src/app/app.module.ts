@@ -33,7 +33,7 @@ registerLocaleData(locale);
     BrowserAnimationsModule,
     HttpClientModule,
     FontAwesomeModule,
-    NgxMaskDirective, 
+    NgxMaskDirective,
     NgxMaskPipe
   ],
   providers: [

@@ -13,11 +13,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MantimientoContratosComponent } from '../mantimiento-contratos/mantimiento-contratos.component';
 import { Funerarias } from 'src/app/interfaces/Funerarias/funerarioas';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-registro-de-contratos',
-  templateUrl: './registro-de-contratos.component.html',
-  styleUrls: ['./registro-de-contratos.component.css']
+  templateUrl: './registro-de-contratos.component.html'
 })
 export class RegistroDeContratosComponent implements OnInit {
   public cargando = true;
@@ -30,7 +30,7 @@ export class RegistroDeContratosComponent implements OnInit {
   private generalService = inject(GeneralService);
   public dialog = inject(MatDialog);
   private origenVenta: TablaVentasDetalle[] = [];
-  public funerarias : Funerarias[]=[];
+  public funerarias: Funerarias[] = [];
   public codigoPlan: TablaVentasDetalle[] = [];
   public tipoSepultura: TablaVentasDetalle[] = [];
   public plataforma: TablaVentasDetalle[] = [];
@@ -40,8 +40,11 @@ export class RegistroDeContratosComponent implements OnInit {
   public situacion: TablaVentasDetalle[] = [];
   public tipoPago: TablaRegistro[] = [];
   public sepultura: TablaVentasDetalle[] = [];
+  public permision!: boolean;
+  private authService = inject(AuthService)
 
   async ngOnInit() {
+    this.permision = this.authService.usuario.usua_indicador_asesor === true ? true : this.authService.usuario.usua_icod_usuario === 4 ? true : false;
     this.range = new FormGroup({
       fechaInicio: new FormControl(this.obtenerPrimeraFechaDelAño(), [Validators.required]),
       fechaFinal: new FormControl(new Date().toISOString().substring(0, 10), [Validators.required])
@@ -76,7 +79,7 @@ export class RegistroDeContratosComponent implements OnInit {
   getSepultura = (icod: number): string => icod === null ? '' : this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0] === undefined ? "" : this.sepultura.filter(x => x.tabvd_iid_tabla_venta_det === icod)[0].tabvd_vdescripcion!;
 
   obtenerPrimeraFechaDelAño(): string {
-    
+
     const year = new Date().getFullYear();
     const firstDay = new Date(year, 0, 1);
     const formattedDate = `${firstDay.getFullYear()}-${(firstDay.getMonth() + 1).toString().padStart(2, '0')}-${firstDay.getDate().toString().padStart(2, '0')}`;
@@ -125,7 +128,7 @@ export class RegistroDeContratosComponent implements OnInit {
     this.dialog.open(MantimientoContratosComponent, {
       width: '750px',
       disableClose: true,
-      data : contrato
+      data: contrato
     }).afterClosed().subscribe(result => {
       if (result) {
         this.cargarContratos();

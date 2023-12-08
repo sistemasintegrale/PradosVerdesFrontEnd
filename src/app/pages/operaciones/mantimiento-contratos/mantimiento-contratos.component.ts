@@ -2,9 +2,9 @@ import { filter } from 'rxjs';
 import { AuthService } from './../../../services/auth/auth.service';
 import { GeneralService } from './../../../services/general/general.service';
 import { Contrato } from 'src/app/interfaces/contrato/contrato';
-import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
 import { SharedService } from 'src/app/services/shared.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TablaVentasDetalle } from 'src/app/interfaces/tabla-ventas/tabla-ventas-detalle';
@@ -15,18 +15,16 @@ import { Distrito } from 'src/app/interfaces/Distrito/distrito';
 import { Parametro } from 'src/app/interfaces/Parametro/parametro';
 import { ContratoService } from 'src/app/services/contrato/contrato.service';
 import Swal from 'sweetalert2';
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+
 
 
 @Component({
   selector: 'app-mantimiento-contratos',
-  templateUrl: './mantimiento-contratos.component.html',
-  styleUrls: ['./mantimiento-contratos.component.css'],
-  providers: [
-
-    provideNgxMask(),
-  ],
+  templateUrl: './mantimiento-contratos.component.html'
 })
 export class MantimientoContratosComponent implements OnInit {
+
   public chargeDniData = false;
   private comonService = inject(SharedService);
   public registerForm!: FormGroup;
@@ -51,7 +49,8 @@ export class MantimientoContratosComponent implements OnInit {
   public parametro!: Parametro;
   private generalService = inject(GeneralService);
   private contratoService = inject(ContratoService);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
+  buttonSave!: boolean;
   @ViewChild('miInput') miInput!: ElementRef;
   constructor(
     @Inject(MAT_DIALOG_DATA) public contrato: Contrato,
@@ -62,6 +61,9 @@ export class MantimientoContratosComponent implements OnInit {
 
 
   async ngOnInit() {
+    debugger
+    this.buttonSave = this.authService.usuario.usua_indicador_asesor === true ? true : this.authService.usuario.usua_icod_usuario === 4 ? true : false;
+
     Promise.all([
       this.generalService.tablaVentasDetalle(1).subscribe(res => this.origenVenta = res),
       this.generalService.tablaVentasDetalle(2).subscribe(res => this.codigoPlan = res),
@@ -73,7 +75,7 @@ export class MantimientoContratosComponent implements OnInit {
       this.generalService.tablaVentasDetalle(14).subscribe(res => this.situacion = res),
       this.generalService.tablaRegistro(97).subscribe(res => this.tipoPago = res),
       this.generalService.tablaVentasDetalle(12).subscribe(res => this.sepultura = res),
-      this.generalService.tablaVentasDetalle(2).subscribe(res => this.deceso = res),
+      this.generalService.tablaVentasDetalle(20).subscribe(res => this.deceso = res),
       this.generalService.tablaVentasDetalle(21).subscribe(res => this.fomaMantenimiento = res),
       this.generalService.Funerarias().subscribe(res => this.funerarias = res),
       this.generalService.tablaRegistro(98).subscribe(res => this.docPago = res),
@@ -106,7 +108,7 @@ export class MantimientoContratosComponent implements OnInit {
       cntc_vdireccion_correo_contratante: new FormControl(this.contrato ? this.contrato.cntc_vdireccion_correo_contratante : '', [Validators.required]),
       cntc_vtelefono_contratante: new FormControl(this.contrato ? this.contrato.cntc_vtelefono_contratante : '', [Validators.required]),
       cntc_vdireccion_contratante: new FormControl(this.contrato ? this.contrato.cntc_vdireccion_contratante : '', [Validators.required]),
-      cntc_inacionalidad_contratante: new FormControl(this.contrato ? this.contrato.cntc_inacionalidad_contratante : null, [Validators.required]),
+      cntc_inacionalidad_contratante: new FormControl(this.contrato ? this.contrato.cntc_inacionalidad_contratante : 669, [Validators.required]),
       cntc_vnombre_representante: new FormControl(this.contrato ? this.contrato.cntc_vnombre_representante : '', [Validators.required]),
       cntc_vapellido_paterno_representante: new FormControl(this.contrato ? this.contrato.cntc_vapellido_paterno_representante : '', [Validators.required]),
       cntc_ruc_representante: new FormControl(this.contrato ? this.contrato.cntc_ruc_representante : '', [Validators.required]),
@@ -124,25 +126,25 @@ export class MantimientoContratosComponent implements OnInit {
       cntc_vcodigo_postal_representante: new FormControl(this.contrato ? this.contrato.cntc_vcodigo_postal_representante : '', [Validators.required]),
       cntc_icodigo_plan: new FormControl(this.contrato ? this.contrato.cntc_icodigo_plan : null, [Validators.required]),
       cntc_icod_nombre_plan: new FormControl(this.contrato ? this.contrato.cntc_icod_nombre_plan : null, [Validators.required]),
-      cntc_nprecio_lista: new FormControl(this.contrato ? this.contrato.cntc_nprecio_lista : 0, [Validators.required]),
-      cntc_ndescuento: new FormControl(this.contrato ? this.contrato.cntc_ndescuento : 0, [Validators.required]),
-      cntc_ninhumacion: new FormControl(this.contrato ? this.contrato.cntc_ninhumacion : 0, [Validators.required]),
+      cntc_nprecio_lista: new FormControl(this.contrato ? this.contrato.cntc_nprecio_lista : '0.00', [Validators.required]),
+      cntc_ndescuento: new FormControl(this.contrato ? this.contrato.cntc_ndescuento : '0.00', [Validators.required]),
+      cntc_ninhumacion: new FormControl(this.contrato ? this.contrato.cntc_ninhumacion : '0.00', [Validators.required]),
       cntc_icod_deceso: new FormControl(this.contrato ? this.contrato.cntc_icod_deceso : null, [Validators.required]),
-      cntc_npago_covid19: new FormControl(this.contrato ? this.contrato.cntc_npago_covid19 : 0, [Validators.required]),
+      cntc_npago_covid19: new FormControl(this.contrato ? this.contrato.cntc_npago_covid19 : '0.00', [Validators.required]),
       cntc_icod_foma_mante: new FormControl(this.contrato ? this.contrato.cntc_icod_foma_mante : null, [Validators.required]),
-      cntc_naporte_fondo: new FormControl(this.contrato ? this.contrato.cntc_naporte_fondo : 0, [Validators.required]),
-      cntc_nIGV: new FormControl(this.contrato ? this.contrato.cntc_nIGV : 0, [Validators.required]),
-      cntc_nfinanciamientro: new FormControl(this.contrato ? this.contrato.cntc_nfinanciamientro : 0, [Validators.required]),
+      cntc_naporte_fondo: new FormControl(this.contrato ? this.contrato.cntc_naporte_fondo : '0.00', [Validators.required]),
+      cntc_nIGV: new FormControl(this.contrato ? this.contrato.cntc_nIGV : '0.00', [Validators.required]),
+      cntc_nfinanciamientro: new FormControl(this.contrato ? this.contrato.cntc_nfinanciamientro : '0.00', [Validators.required]),
       cntc_itipo_pago: new FormControl(this.contrato ? this.contrato.cntc_itipo_pago : null, [Validators.required]),
-      cntc_ncuota_inicial: new FormControl(this.contrato ? this.contrato.cntc_ncuota_inicial : 0, [Validators.required]),
+      cntc_ncuota_inicial: new FormControl(this.contrato ? this.contrato.cntc_ncuota_inicial : '0.00', [Validators.required]),
       cntc_inro_cuotas: new FormControl(this.contrato ? this.contrato.cntc_inro_cuotas : null, [Validators.required]),
-      cntc_nmonto_cuota: new FormControl(this.contrato ? this.contrato.cntc_nmonto_cuota : 0, [Validators.required]),
+      cntc_nmonto_cuota: new FormControl(this.contrato ? this.contrato.cntc_nmonto_cuota : '0.00', [Validators.required]),
       cntc_sfecha_cuota: new FormControl(this.contrato ? this.comonService.DateToInput(this.contrato.cntc_sfecha_cuota!) : null, [Validators.required]),
       cntc_sfecha_inicio_pago: new FormControl(this.contrato ? this.comonService.DateToInput(this.contrato.cntc_sfecha_inicio_pago!) : null, [Validators.required]),
       cntc_sfecha_fin_pago: new FormControl(this.contrato ? this.comonService.DateToInput(this.contrato.cntc_sfecha_fin_pago!) : null, [Validators.required]),
       cntc_itipo_sepultura: new FormControl(this.contrato ? this.contrato.cntc_itipo_sepultura : null, [Validators.required]),
     });
-
+    this.registerForm.get('cntc_icod_situacion')?.disable();
     if (this.contrato === null) {
       this.generalService.Parametro().subscribe(
         res => {
@@ -153,6 +155,9 @@ export class MantimientoContratosComponent implements OnInit {
     }
     if (this.authService.usuario.vendc_icod_vendedor !== 0)
       this.registerForm.get('cntc_icod_vendedor')?.disable();
+
+    if (this.contrato === null || this.registerForm.get('cntc_iorigen_venta')?.value !== 2)
+      this.registerForm.get('cntc_icod_funeraria')?.disable()
   }
 
   close() {
@@ -190,7 +195,15 @@ export class MantimientoContratosComponent implements OnInit {
     this.registerForm.get('cntc_vnumero_contrato')?.setValue(valor);
   }
 
+
+
+
+
+
   serieAnterior!: string;
+
+
+
 
 
 
@@ -254,7 +267,7 @@ export class MantimientoContratosComponent implements OnInit {
     const valorSeleccionado = event.target.value;
     if (valorSeleccionado == 0) return;
     const TipoEspacio = this.tipoSepultura.filter(x => x.tabvd_iid_tabla_venta_det == valorSeleccionado)[0]
-    if(TipoEspacio == undefined) return; 
+    if (TipoEspacio == undefined) return;
 
     this.generalService.tablaVentasDetalle(2).subscribe(res => {
 
@@ -263,10 +276,25 @@ export class MantimientoContratosComponent implements OnInit {
       console.log(codigoPlan);
       this.registerForm.get('cntc_icodigo_plan')?.setValue(codigoPlan.tabvd_iid_tabla_venta_det);
     })
+  }
 
+  OrigenChange(event: any) {
+    const valorSeleccionado = event.target.value;
 
+    if (valorSeleccionado == 2)
+      this.registerForm.get('cntc_icod_funeraria')?.enable()
+    else {
+      this.registerForm.get('cntc_icod_funeraria')?.disable()
+      this.registerForm.get('cntc_icod_funeraria')?.setValue(0)
+    }
 
+  }
 
+  TipoSepulturaFilter() {
+    const tipoPlan = this.registerForm.get('cntc_icodigo_plan')?.value;
+    const nombrePlan = this.registerForm.get('cntc_icod_nombre_plan')?.value;
 
+    this.generalService.TipoSepulturaByPlan(tipoPlan, nombrePlan)
+      .subscribe(res => this.tipoSepultura = res)
   }
 }
