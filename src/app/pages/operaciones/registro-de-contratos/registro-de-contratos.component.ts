@@ -1,9 +1,7 @@
 import { Contrato } from 'src/app/interfaces/contrato/contrato';
 import { Component, OnInit, inject } from '@angular/core';
-import { UsuarioData } from 'src/app/models/usuario/usuario-data';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContratoFilters } from 'src/app/interfaces/contrato/contrato-filters';
-import * as moment from 'moment';
 import { ContratoService } from 'src/app/services/contrato/contrato.service';
 import { TablaVentasDetalle } from 'src/app/interfaces/tabla-ventas/tabla-ventas-detalle';
 import { Vendedor } from 'src/app/interfaces/vendedor/vendedor';
@@ -14,6 +12,9 @@ import { MantimientoContratosComponent } from '../mantimiento-contratos/mantimie
 import { Funerarias } from 'src/app/interfaces/Funerarias/funerarioas';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { jsPDF } from 'jspdf';
+import { ImprimirContrato } from './impresiones/impresion.contrato';
+import { SelectImpresionComponent } from './Components/select-impresion/select-impresion.component';
 
 @Component({
   selector: 'app-registro-de-contratos',
@@ -47,7 +48,9 @@ export class RegistroDeContratosComponent implements OnInit {
     this.permision = this.authService.usuario.usua_indicador_asesor === true ? true : this.authService.usuario.usua_icod_usuario === 4 ? true : false;
     this.range = new FormGroup({
       fechaInicio: new FormControl(this.obtenerPrimeraFechaDelAño(), [Validators.required]),
-      fechaFinal: new FormControl(new Date().toISOString().substring(0, 10), [Validators.required])
+      fechaFinal: new FormControl(new Date().toISOString().substring(0, 10), [Validators.required]),
+      contratante: new FormControl(''),
+      numContrato: new FormControl('')
     });
     this.cargarContratos();
 
@@ -103,6 +106,8 @@ export class RegistroDeContratosComponent implements OnInit {
     this.cargando = true;
     this.filters.fechaInicio = this.convertDateFormat(this.range.value.fechaInicio);
     this.filters.fechaFinal = this.convertDateFormat(this.range.value.fechaFinal);
+    this.filters.contratante = this.range.value.contratante;
+    this.filters.numContrato = this.range.value.numContrato;
     this.contratoService.ListarContratosPorFechas(this.filters).subscribe((resp) => {
       this.contratos = resp
       this.cargando = false;
@@ -122,9 +127,6 @@ export class RegistroDeContratosComponent implements OnInit {
 
 
   openEdit(contrato: Contrato) {
-
-    console.table(contrato)
-
     this.dialog.open(MantimientoContratosComponent, {
       width: '750px',
       disableClose: true,
@@ -160,6 +162,35 @@ export class RegistroDeContratosComponent implements OnInit {
   }
 
   exportarExcel() {
+
+  }
+
+  getEdit(item: Contrato): boolean {
+    if (this.permision) {
+      if (item.cntc_icod_situacion == 331 && item.cntc_vorigen_registro == 'WEB') {
+        return true;
+      } else {
+        return false;
+      }
+
+    } else {
+      return false
+    }
+
+  }
+
+  Imprimir(item: Contrato) {
+    this.contratoService.ContratoImpresion(item.cntc_icod_contrato)
+      .subscribe((resp) => {
+        this.dialog.open(SelectImpresionComponent, {
+          width: '650px',
+          disableClose: false,
+          data: resp
+        });
+      }
+      );
+
+
 
   }
 }
