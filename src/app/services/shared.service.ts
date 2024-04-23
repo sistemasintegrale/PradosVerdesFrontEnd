@@ -41,12 +41,23 @@ export class SharedService {
   }
 
   DateToInput(fecha: string): string {
+    if (fecha == null) return '';
     const parsedDate = new Date(fecha);
     return format(parsedDate, 'yyyy-MM-dd');
   }
 
-  ObtenerDatosDni(dni : string): Observable<UsuarioApiResponse> {
+  ObtenerDatosDni(dni: string): Observable<UsuarioApiResponse> {
     return this._http.get<UsuarioApiResponse>(`${base_url}/ApiProviders/${dni}`);
+  }
+
+
+  ObtenerNombreMes(mes: number) {
+    const meses: string[] = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    // Restamos 1 al número del mes ya que los índices de los arrays comienzan en 0
+    return meses[mes - 1];
   }
 
 }

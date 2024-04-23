@@ -32,6 +32,9 @@ import { ButtonModule } from 'primeng/button';
 import { RegistroDeContratosComponent } from './operaciones/registro-de-contratos/registro-de-contratos.component';
 import { MantimientoContratosComponent } from './operaciones/mantimiento-contratos/mantimiento-contratos.component';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { SelectImpresionComponent } from './operaciones/registro-de-contratos/Components/select-impresion/select-impresion.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 
@@ -44,6 +47,7 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
     UserDialogComponent,
     RegistroDeContratosComponent,
     MantimientoContratosComponent,
+    SelectImpresionComponent,
 
   ],
   imports: [
@@ -73,7 +77,9 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
     TableModule,
     ButtonModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    NgSelectModule,
+    MatDividerModule
   ],
   exports: [
     DashboardComponent,

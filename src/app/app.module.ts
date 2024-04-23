@@ -18,6 +18,7 @@ import { registerLocaleData } from "@angular/common";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask'
 
+
 registerLocaleData(locale);
 
 @NgModule({
@@ -34,7 +35,8 @@ registerLocaleData(locale);
     HttpClientModule,
     FontAwesomeModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

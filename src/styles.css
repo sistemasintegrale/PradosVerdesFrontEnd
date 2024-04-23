@@ -2,7 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* Add application styles & imports to this file! */
+@import '~@ng-select/ng-select/themes/default.theme.css';
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 html, body { height: 100%; }
@@ -20,4 +21,26 @@ mat-form-field div {
 }
 mat-option{
   background-color: transparent !important;
+ }
+
+ .ng-select {
+
+   .ng-select-container {
+    background-color: rgb(249, 250, 251);
+     border: 1px solid #d1d5db;
+     border-radius: 8px;
+     min-height: 1.75rem;
+    max-height: 1.75rem;
+   }
+ }
+
+ .ng-value{
+  margin-top: 5px;
+ }
+
+ .ng-clear-wrapper{
+margin-top: 4px;
+ }
+ .ng-arrow-wrapper{
+margin-top: 4px;
  }
