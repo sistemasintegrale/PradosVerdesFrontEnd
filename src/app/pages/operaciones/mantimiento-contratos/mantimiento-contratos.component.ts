@@ -439,7 +439,7 @@ export class MantimientoContratosComponent implements OnInit {
   }
 
   numCuotasChange(event: any) {
-    const valorSeleccionado = event.icantidad_cuotas;
+    const valorSeleccionado = event.target.value;
     const selectedDet = this.tipoSepulturaDet.filter(x => x.icantidad_cuotas == valorSeleccionado)[0];
     //this.registerForm.get('cntc_ncuota_inicial')?.setValue(this.tipoSepulturaCabSelect?.ncuota_inicial);
     if (selectedDet) {
