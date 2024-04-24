@@ -223,6 +223,7 @@ export class MantimientoContratosComponent implements OnInit {
   }
 
   SetValues() {
+    debugger
     const tipoPlan = this.registerForm.get('cntc_icodigo_plan')?.value;
     const nombrePlan = this.registerForm.get('cntc_icod_nombre_plan')?.value;
     this.generalService.TipoSepulturaByPlan(tipoPlan, nombrePlan)
@@ -420,7 +421,7 @@ export class MantimientoContratosComponent implements OnInit {
       this.registerForm.get('cntc_nprecio_lista')?.setValue(this.tipoSepulturaCabSelect.nprecio_lista);
     } else {
       this.tipoSepulturaDet = [];
-      this.registerForm.get('cntc_nprecio_lista')?.setValue('00.00');
+      // this.registerForm.get('cntc_nprecio_lista')?.setValue('00.00');
     }
 
 
@@ -440,8 +441,10 @@ export class MantimientoContratosComponent implements OnInit {
   numCuotasChange(event: any) {
     const valorSeleccionado = event.icantidad_cuotas;
     const selectedDet = this.tipoSepulturaDet.filter(x => x.icantidad_cuotas == valorSeleccionado)[0];
-    this.registerForm.get('cntc_ncuota_inicial')?.setValue(this.tipoSepulturaCabSelect?.ncuota_inicial);
-    this.registerForm.get('cntc_nmonto_cuota')?.setValue(selectedDet.nmonto);
+    //this.registerForm.get('cntc_ncuota_inicial')?.setValue(this.tipoSepulturaCabSelect?.ncuota_inicial);
+    if (selectedDet) {
+      this.registerForm.get('cntc_nmonto_cuota')?.setValue(selectedDet.nmonto);
+    }
     this.CalcularFechaFinPago();
     this.TipoPagoChange();
   }

@@ -857,11 +857,8 @@
       <div class="relative   w-full min-w-[5rem] max-w-[10rem]">
         <label for="cntc_inro_cuotas" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
           N° de Cuotas :</label>
-
-        <ng-select formControlName="cntc_inro_cuotas" [items]="tipoSepulturaDet" [bindLabel]="'icantidad_cuotas'"
-          (change)="numCuotasChange($event)" [bindValue]="'icantidad_cuotas'" [addTag]="CustomCuota" class="">
-
-        </ng-select>
+        <input type="number" formControlName="cntc_inro_cuotas" (input)="numCuotasChange($event)" min="0"
+          class="text-right h-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
       </div>
       <div class="relative   w-full min-w-[5rem] max-w-[10rem]">
         <label for="cntc_nmonto_cuota" class="block mb-0 text-xs font-light text-gray-900 dark:text-white ml-2">
