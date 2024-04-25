@@ -127,6 +127,11 @@ export class RegistroDeContratosComponent implements OnInit {
 
 
   openEdit(contrato: Contrato) {
+
+    if (contrato == null || contrato == undefined) {
+      Swal.fire("Seleccione un Registro", 'No se Seleccionó ningún registro.', 'error')
+      return;
+    }
     this.dialog.open(MantimientoContratosComponent, {
       width: '750px',
       disableClose: true,
@@ -166,6 +171,7 @@ export class RegistroDeContratosComponent implements OnInit {
   }
 
   getEdit(item: Contrato): boolean {
+    if(item == undefined) return true;
     if (this.permision) {
       if (item.cntc_icod_situacion == 331 && item.cntc_vorigen_registro == 'WEB') {
         return true;
@@ -180,6 +186,10 @@ export class RegistroDeContratosComponent implements OnInit {
   }
 
   Imprimir(item: Contrato) {
+    if (item == null || item == undefined) {
+      Swal.fire("Seleccione un Registro", 'No se Seleccionó ningún registro.', 'error')
+      return;
+    }
     this.contratoService.ContratoImpresion(item.cntc_icod_contrato)
       .subscribe((resp) => {
         this.dialog.open(SelectImpresionComponent, {

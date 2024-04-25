@@ -441,7 +441,7 @@ export class MantimientoContratosComponent implements OnInit {
   numCuotasChange(event: any) {
     const valorSeleccionado = event.target.value;
     const selectedDet = this.tipoSepulturaDet.filter(x => x.icantidad_cuotas == valorSeleccionado)[0];
-    //this.registerForm.get('cntc_ncuota_inicial')?.setValue(this.tipoSepulturaCabSelect?.ncuota_inicial);
+    this.registerForm.get('cntc_ncuota_inicial')?.setValue(this.tipoSepulturaCabSelect?.ncuota_inicial);
     if (selectedDet) {
       this.registerForm.get('cntc_nmonto_cuota')?.setValue(selectedDet.nmonto);
     }
@@ -498,6 +498,14 @@ export class MantimientoContratosComponent implements OnInit {
     // CREDITO 674 | CONTADO 673 | DONACION 678
     const value = this.registerForm.get('cntc_itipo_pago')?.value;
     if (value == 674) {
+      if (this.tipoSepulturaDet.length > 0 && this.registerForm.get('cntc_inro_cuotas')?.value == 0) {
+
+        this.registerForm.get('cntc_inro_cuotas')?.setValue(this.tipoSepulturaDet[0].icantidad_cuotas);
+        this.registerForm.get('cntc_nmonto_cuota')?.setValue(this.tipoSepulturaDet[0].nmonto);
+
+        this.CalcularFechaFinPago();
+       
+      }
       this.registerForm.get('cntc_inro_cuotas')?.enable()
       this.registerForm.get('cntc_ncuota_inicial')?.enable()
       this.registerForm.get('cntc_nmonto_cuota')?.enable()
