@@ -144,6 +144,10 @@ export class RegistroDeContratosComponent implements OnInit {
   }
 
   eliminar(contrato: Contrato) {
+    if (contrato == null || contrato == undefined) {
+      Swal.fire("Seleccione un Registro", 'No se Seleccionó ningún registro.', 'error')
+      return;
+    }
     Swal.fire({
       title: '¿Borrar Contrato?',
       text: `Esta apunto de borrar  ${contrato.cntc_vnumero_contrato}`,
